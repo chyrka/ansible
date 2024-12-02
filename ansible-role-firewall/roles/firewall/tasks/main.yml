@@ -1,0 +1,52 @@
+---
+# tasks file for firewall
+- name: Ensure firewalld is installed
+  yum:
+    name: firewalld
+    state: present
+  become: true
+
+- name: Ensure firewalld is running and enabled
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+  become: true
+
+- name: Open ports in the firewall
+  firewalld:
+    port: "{{ item.port }}/{{ item.protocol }}"
+    source: "{{ item.source | default(omit) }}"
+    zone: "{{ firewall_zone }}"
+    permanent: true
+    state: enabled
+    immediate: true
+  loop: "{{ default_firewall_ports + (firewall_ports | default([])) }}"
+  notify: Reload firewalld
+
+- name: Block ICMP timestamp
+  firewalld:
+    icmp_block: "{{ item }}"
+    zone: "{{ firewall_zone }}"
+    permanent: true
+    state: enabled
+  loop: "{{ icmp_blocks }}"
+  notify: Reload firewalld
+
+- name: Check currently open ports in the firewall
+  command: firewall-cmd --list-ports
+  register: firewall_ports_list
+
+- name: Display open ports
+  debug:
+    msg: "Currently open ports: {{ firewall_ports_list.stdout }}"
+
+- name: Check currently open services in the firewall
+  ansible.builtin.command: firewall-cmd --list-services
+  register: firewall_services_list
+  become: true
+
+- name: Display open services
+  ansible.builtin.debug:
+    msg: "Currently open services: {{ firewall_services_list.stdout }}"
+      

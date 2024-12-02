@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  vars:
+    firewall_ports:
+      #- { port: 3306, protocol: tcp, source: 127.0.0.1/32 }       # MySQL
+      - { port: 10050, protocol: tcp }     # Zabbix Monitoring
+      - { port: 8400, protocol: tcp }      # Comvault backup
+      - { port: 8403-8404, protocol: tcp } # Comvault backup
+  roles:
+    - firewall
+

@@ -1,0 +1,13 @@
+---
+# Define ports, protocols, and optional sources. If source is not specified - open to all
+default_firewall_ports:
+  # - { port: 22, protocol: tcp, source: "10.10.24.0/24"  }
+  - { port: 22, protocol: tcp }
+  - { port: 80, protocol: tcp }
+  - { port: 443, protocol: tcp }
+
+firewall_zone: public
+
+icmp_blocks:
+  - timestamp-request
+  - timestamp-reply

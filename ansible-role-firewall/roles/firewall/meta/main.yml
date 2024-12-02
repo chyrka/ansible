@@ -1,0 +1,29 @@
+---
+galaxy_info:
+  author: Oleg Chyrka
+  description: DevOps
+  company: 
+
+  license: license (GPL-2.0-or-later, MIT, etc)
+
+  min_ansible_version: 2.1
+
+  platforms:
+  - name: EL
+    versions:
+    - 7
+    - 8
+    - 9
+  # - name: SomePlatform
+  #   versions:
+  #   - all
+  #   - 1.0
+  #   - 7
+  #   - 99.99
+
+  galaxy_tags: 
+  - firewalld
+
+
+dependencies: []
+
